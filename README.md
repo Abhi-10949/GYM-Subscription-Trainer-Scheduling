@@ -1,249 +1,152 @@
 # Gym Management System
 
-Full-stack Gym Management System starter project using:
+A full-stack gym management platform built with React, Spring Boot, and MySQL. The application supports admin and member authentication, package and trainer management, membership tracking, and a BMI calculator for visitors.
 
-- React JS
-- Spring Boot
-- MySQL
-- Bootstrap
-- Maven
+## Live Demo
 
-## Project Structure
+- Frontend: [https://gym-subscription-trainer-scheduling.vercel.app](https://gym-subscription-trainer-scheduling.vercel.app)
 
-- `backend/` - Spring Boot REST API
-- `frontend/` - React + Vite application
 
-## Features Included
+## Tech Stack
+
+- Frontend: React, Vite, Bootstrap, Axios
+- Backend: Spring Boot, Spring Data JPA, Spring Security, Maven
+- Database: MySQL
+- Deployment: Vercel, Render, Railway
+
+## Features
 
 - Admin registration and login
 - Member registration and login
-- Add and view trainers
-- Add and view packages
-- View all members and search members by name
-- Update member profile and change password
-- Add and view memberships
-- View membership details by member client ID
-- BMI calculator for visitors
+- Add, update, view, and delete trainers
+- Add, update, and view gym packages
+- Register members and manage profiles
+- Create and manage memberships
+- Membership request approval flow
+- Member search by keyword
+- BMI calculator page
+- Responsive UI for public and dashboard pages
 
-## Backend Setup
+## Project Structure
 
-1. Create a `.env` file inside `backend/`.
-2. Add your database values:
+```text
+GYM_SUBS/
+├── backend/    Spring Boot REST API
+├── frontend/   React + Vite frontend
+├── docker-compose.yml
+└── render.yaml
+```
+
+## Live Deployment Architecture
+
+- Frontend deployed on Vercel
+- Backend deployed on Render
+- MySQL database hosted on Railway
+
+## Local Development Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Abhi-10949/GYM-Subscription-Trainer-Scheduling.git
+cd GYM-Subscription-Trainer-Scheduling
+```
+
+### 2. Backend Setup
+
+Create `backend/.env`:
 
 ```env
 DB_URL=jdbc:mysql://localhost:3306/gym_management_system?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 DB_USERNAME=root
 DB_PASSWORD=your_mysql_password
+APP_CORS_ALLOWED_ORIGINS=http://localhost:5173
 ```
 
-3. Run:
+Run the backend:
 
 ```bash
 cd backend
 mvn spring-boot:run
 ```
 
-Backend default URL: `http://localhost:8080`
+Backend runs on:
 
-## Frontend Setup
-
-1. Install packages:
-
-```bash
-cd frontend
-npm install
+```text
+http://localhost:8080
 ```
 
-2. Create a `.env` file inside `frontend/`:
+### 3. Frontend Setup
+
+Create `frontend/.env`:
 
 ```env
 VITE_API_BASE_URL=http://localhost:8080/api
 ```
 
-3. Run the development server:
+Run the frontend:
 
 ```bash
+cd frontend
+npm install
 npm run dev
 ```
 
-Frontend default URL: `http://localhost:5173`
+Frontend runs on:
 
-## Docker Deployment
+```text
+http://localhost:5173
+```
 
-This repo now includes containerized deployment for the full stack:
+## Docker Setup
 
-- `database` - MySQL 8
-- `backend` - Spring Boot app on port `8080`
-- `frontend` - Vite build served by Nginx on port `3000`
-
-### Start everything
-
-From the project root:
+You can also run the entire project locally with Docker.
 
 ```bash
 docker compose up --build
 ```
 
-### Access the app
+Services:
 
 - Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8080/api`
+- Backend: `http://localhost:8080/api`
 - MySQL: `localhost:3306`
 
-### Important production variables
+## Deployment Configuration
 
-Backend supports environment-based CORS now:
+This repository includes:
+
+- [docker-compose.yml](/Users/abhishekkumar/Documents/JAVA_PROJECT_GYM_SUBS/docker-compose.yml) for local containerized setup
+- [render.yaml](/Users/abhishekkumar/Documents/JAVA_PROJECT_GYM_SUBS/render.yaml) for Render deployment
+- [frontend/vercel.json](/Users/abhishekkumar/Documents/JAVA_PROJECT_GYM_SUBS/frontend/vercel.json) for Vercel deployment
+- [backend/Dockerfile](/Users/abhishekkumar/Documents/JAVA_PROJECT_GYM_SUBS/backend/Dockerfile) for backend container build
+- [frontend/Dockerfile](/Users/abhishekkumar/Documents/JAVA_PROJECT_GYM_SUBS/frontend/Dockerfile) for frontend container build
+
+## Production Environment Variables
+
+### Backend
 
 ```env
-APP_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
-DB_URL=jdbc:mysql://your-db-host:3306/gym_management_system?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+DB_URL=jdbc:mysql://your-host:3306/your-database?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 DB_USERNAME=your_db_user
 DB_PASSWORD=your_db_password
+APP_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app
 ```
 
-Frontend build uses:
+The backend also supports Railway-style MySQL environment variables:
 
 ```env
-VITE_API_BASE_URL=https://your-backend-domain.com/api
+MYSQLHOST=your-host
+MYSQLPORT=3306
+MYSQLDATABASE=your-database
+MYSQLUSER=your-user
+MYSQLPASSWORD=your-password
 ```
 
-### Suggested cloud split
-
-If you want to deploy publicly, a simple setup is:
-
-- Frontend on Vercel or Netlify
-- Backend on Render, Railway, or AWS
-- Database on Railway MySQL, Render PostgreSQL/MySQL alternative, AWS RDS, or another managed MySQL provider
-
-For that setup:
-
-1. Deploy the database and copy its connection string into backend env vars.
-2. Deploy the backend and set `APP_CORS_ALLOWED_ORIGINS` to your frontend URL.
-3. Deploy the frontend with `VITE_API_BASE_URL` pointing to the backend public URL.
-
-## Vercel + Render + Railway Deployment
-
-This repo is now prepared for this split:
-
-- `frontend/` -> Vercel
-- `backend/` -> Render
-- MySQL -> Railway
-
-### 1. Deploy MySQL on Railway
-
-Create a new Railway project and add the MySQL template.
-
-Railway's current MySQL docs say the service exposes:
-
-- `MYSQLHOST`
-- `MYSQLPORT`
-- `MYSQLUSER`
-- `MYSQLPASSWORD`
-- `MYSQLDATABASE`
-- `MYSQL_URL`
-
-Sources:
-
-- [Railway MySQL docs](https://docs.railway.com/guides/mysql)
-- [Railway variables docs](https://docs.railway.com/variables)
-
-For a Render-hosted backend, the simplest path is:
-
-1. Open the Railway MySQL service.
-2. Copy either the individual MySQL variables or the connection details from `MYSQL_URL`.
-3. Keep TCP Proxy enabled so Render can connect from outside Railway.
-
-Note:
-The backend now supports either the app's original `DB_URL` style or Railway-style `MYSQL_URL` / `MYSQLHOST` variables at startup.
-
-### 2. Deploy Backend on Render
-
-This repo includes a Render Blueprint file at `render.yaml`.
-
-Render's current docs say Blueprint config lives in `render.yaml`, Docker services can point to `dockerfilePath` and `dockerContext`, and web services should bind to `PORT` with a health check path.
-
-Sources:
-
-- [Render Blueprint YAML reference](https://render.com/docs/blueprint-spec)
-- [Render web services docs](https://render.com/docs/web-services)
-- [Render environment variables docs](https://render.com/docs/environment-variables)
-
-Recommended steps:
-
-1. Push this repo to GitHub.
-2. In Render, create a new Blueprint or Web Service from the repo.
-3. Render should use [`render.yaml`](/Users/abhishekkumar/Documents/JAVA_PROJECT_GYM_SUBS/render.yaml).
-4. Set these backend environment variables in Render:
-
-```env
-APP_CORS_ALLOWED_ORIGINS=https://your-frontend-project.vercel.app
-DB_URL=jdbc:mysql://<railway-host>:<railway-port>/<railway-db>?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-DB_USERNAME=<railway-user>
-DB_PASSWORD=<railway-password>
-```
-
-You can also use Railway-style variables instead:
-
-```env
-APP_CORS_ALLOWED_ORIGINS=https://your-frontend-project.vercel.app
-MYSQLHOST=<railway-host>
-MYSQLPORT=<railway-port>
-MYSQLDATABASE=<railway-db>
-MYSQLUSER=<railway-user>
-MYSQLPASSWORD=<railway-password>
-```
-
-After deploy, verify:
-
-- Health endpoint: `https://your-render-backend.onrender.com/api/health`
-- API base URL: `https://your-render-backend.onrender.com/api`
-
-### 3. Deploy Frontend on Vercel
-
-Vercel's current docs say build settings can be configured in `vercel.json`, and rewrites are also defined there. This repo includes a Vercel config in `frontend/vercel.json` for Vite output and SPA routing.
-
-Sources:
-
-- [Vercel vercel.json docs](https://vercel.com/docs/project-configuration/vercel-json)
-- [Vercel build docs](https://vercel.com/docs/deployments/configure-a-build)
-- [Vercel rewrites docs](https://vercel.com/docs/rewrites)
-
-Recommended steps:
-
-1. In Vercel, import the same GitHub repo.
-2. Set the Root Directory to `frontend`.
-3. Confirm the framework is Vite.
-4. Set this environment variable:
+### Frontend
 
 ```env
 VITE_API_BASE_URL=https://your-render-backend.onrender.com/api
-```
-
-5. Deploy.
-
-### 4. Final Wiring
-
-Once both apps are live:
-
-1. Copy the real Vercel production URL into Render's `APP_CORS_ALLOWED_ORIGINS`.
-2. Redeploy the Render backend.
-3. Test:
-   - Home page loads
-   - Admin/member login works
-   - Trainer/package/member APIs return data
-   - `GET /api/health` returns status `UP`
-
-### Example Production Values
-
-```env
-# Render backend
-APP_CORS_ALLOWED_ORIGINS=https://gym-subs.vercel.app
-DB_URL=jdbc:mysql://mysql.railway.internal-or-public-host:12345/gym_management_system?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-DB_USERNAME=root
-DB_PASSWORD=strong-password
-
-# Vercel frontend
-VITE_API_BASE_URL=https://gym-management-backend.onrender.com/api
 ```
 
 ## Main API Endpoints
@@ -264,3 +167,24 @@ VITE_API_BASE_URL=https://gym-management-backend.onrender.com/api
 - `GET /api/memberships`
 - `POST /api/memberships`
 - `GET /api/memberships/member/{clientId}`
+- `GET /api/health`
+
+## Demo Data Suggestions
+
+You can test the project by creating:
+
+- Demo admin accounts
+- Demo members
+- Demo packages such as Basic, Standard, and Premium
+- Demo trainers with different specializations
+- Membership approval remarks such as `Welcome to the gym. Your membership has been approved.`
+
+## Notes
+
+- Render free tier may sleep after inactivity, so the first API request can be slow.
+- The public trainer and package pages only show data that exists in the production database.
+- If deployed frontend requests fail, verify `APP_CORS_ALLOWED_ORIGINS` in Render.
+
+## Author
+
+Abhishek Kumar
