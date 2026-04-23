@@ -12,7 +12,7 @@ A full-stack gym management platform built with React, Spring Boot, and MySQL. T
 - Frontend: React, Vite, Bootstrap, Axios
 - Backend: Spring Boot, Spring Data JPA, Spring Security, Maven
 - Database: MySQL
-- Deployment: Vercel, Render, Railway
+- Deployment: Vercel, Render, and a MySQL provider
 
 ## Features
 
@@ -41,7 +41,7 @@ GYM_SUBS/
 
 - Frontend deployed on Vercel
 - Backend deployed on Render
-- MySQL database hosted on Railway
+- MySQL database hosted on a compatible provider such as Railway or Aiven
 
 ## Local Development Setup
 
@@ -133,6 +133,15 @@ DB_PASSWORD=your_db_password
 APP_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app
 ```
 
+Example for Aiven MySQL:
+
+```env
+DB_URL=jdbc:mysql://your-aiven-host:your-aiven-port/your-database?sslMode=REQUIRED&serverTimezone=UTC
+DB_USERNAME=your_aiven_user
+DB_PASSWORD=your_aiven_password
+APP_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app
+```
+
 The backend also supports Railway-style MySQL environment variables:
 
 ```env
@@ -184,6 +193,43 @@ You can test the project by creating:
 - Render free tier may sleep after inactivity, so the first API request can be slow.
 - The public trainer and package pages only show data that exists in the production database.
 - If deployed frontend requests fail, verify `APP_CORS_ALLOWED_ORIGINS` in Render.
+
+## If Railway Trial Expired
+
+You do not need to rewrite the project.
+
+This backend already supports standard MySQL environment variables, so you can:
+
+- keep using Railway by upgrading the Railway project plan
+- switch to Aiven MySQL by updating `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD`
+- move the MySQL database to another MySQL hosting provider
+- run MySQL locally with Docker for development
+
+### Fastest Recovery
+
+1. Create a new MySQL database somewhere else, or start the local Docker database.
+2. Update backend environment variables:
+
+```env
+DB_URL=jdbc:mysql://your-host:3306/your-database?sslMode=REQUIRED&serverTimezone=UTC
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+APP_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app
+```
+
+3. Redeploy the backend on Render.
+4. Keep frontend `VITE_API_BASE_URL` pointed at your Render backend.
+5. Change Vercel only if your Render backend URL changed.
+
+### Local Development Option
+
+If you only want the project working on your own machine, run:
+
+```bash
+docker compose up --build
+```
+
+This starts frontend, backend, and MySQL locally without Railway.
 
 ## Author
 
