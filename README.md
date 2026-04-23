@@ -4,7 +4,7 @@ A full-stack gym management platform built with React, Spring Boot, and MySQL. T
 
 ## Live Demo
 
-- Frontend: [https://gym-subscription-trainer-scheduling.vercel.app](https://gym-subscription-trainer-scheduling.vercel.app)
+- Live: [https://gym-subscription-trainer-scheduling-enmcpd5a0.vercel.app/]
 
 
 ## Tech Stack
